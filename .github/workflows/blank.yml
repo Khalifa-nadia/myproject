@@ -18,7 +18,9 @@ jobs:
         uses: docker/setup-buildx-action@v2
         
       - name: Build Docker image
-        run: docker build -t nadiakhalifa/my-test-project .
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-test-project:latest .
+          docker images # Verify the image exists locally
 
   push:
     needs: build
@@ -35,6 +37,5 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       
       - name: Push Docker image
-        run: docker push nadiakhalifa/my-test-project
-
-
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-test-project:latest
